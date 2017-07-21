@@ -1,6 +1,6 @@
 # coroin/aws
 
-A Docker container to run [AWS Command Line Interface](https://aws.amazon.com/cli/) commands.
+A minimal install to run [aws-cli](https://aws.amazon.com/cli/) commands.
 
 ### Installation
 
@@ -17,7 +17,7 @@ To build the image from source:
 ```
 $ git clone https://github.com/coroin/aws.git
 $ cd aws
-$ sudo docker build -t coroin/aws .
+$ docker build -t coroin/aws .
 ```
 
 ### Usage Examples
@@ -36,7 +36,7 @@ $ export AWS_BUCKET="aws-bucket"
 Then run the `cp` command to download the file(s) from S3:
 
 ```
-$ sudo docker run --rm \
+$ docker run --rm \
     -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
     -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
     -e "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" \
