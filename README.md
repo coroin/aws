@@ -17,7 +17,7 @@ To build the image from source:
 ```
 $ git clone https://github.com/coroin/aws.git
 $ cd aws
-$ sudo docker build -t="coroin/aws" .
+$ sudo docker build -t coroin/aws .
 ```
 
 ### Usage Examples
