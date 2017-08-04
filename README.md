@@ -41,7 +41,7 @@ $ docker run --rm \
     -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
     -e "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" \
     coroin/aws \
-    cp s3://${AWS_BUCKET}/ . --recursive
+    s3 cp s3://${AWS_BUCKET}/ . --recursive
 ```
 
 Note: the following AWS inline policy will grant read-only download access recursively:
