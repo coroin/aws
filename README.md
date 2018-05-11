@@ -7,36 +7,46 @@ A minimal install to run [aws-cli](https://aws.amazon.com/cli/) commands.
 Pull the latest version from the Docker registry:
 
 ```
-$ docker pull coroin/aws
+docker pull coroin/aws
 ```
 
 ### Build
 
 To build the image from source:
 
+```bash
+git clone https://github.com/coroin/aws.git
+cd aws
+docker build -t coroin/aws .
 ```
-$ git clone https://github.com/coroin/aws.git
-$ cd aws
-$ docker build -t coroin/aws .
+### Export credentials
+
+Export your AWS credentials to variables (this can be done in a script or directly in the terminal):
+
+```bash
+export AWS_ACCESS_KEY_ID="aws-key-id"
+export AWS_SECRET_ACCESS_KEY="aws-access-key"
+export AWS_DEFAULT_REGION="aws-region"
+export AWS_BUCKET="aws-bucket"
 ```
 
 ### Usage Examples
 
-Download files from S3:
+##### List bucket contents:
 
-First `export` your AWS credentials to variables (this can be done in a script or directly in the terminal):
-
+```bash
+docker run --rm \
+    -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
+    -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
+    -e "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" \
+    coroin/aws \
+    s3 ls s3://${AWS_BUCKET}
 ```
-$ export AWS_ACCESS_KEY_ID="aws-key-id"
-$ export AWS_SECRET_ACCESS_KEY="aws-access-key"
-$ export AWS_DEFAULT_REGION="aws-region"
-$ export AWS_BUCKET="aws-bucket"
-```
 
-Then run the `cp` command to download the file(s) from S3:
+##### Download files:
 
-```
-$ docker run --rm \
+```bash
+docker run --rm \
     -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
     -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
     -e "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" \
@@ -44,9 +54,11 @@ $ docker run --rm \
     s3 cp s3://${AWS_BUCKET}/ . --recursive
 ```
 
-Note: the following AWS inline policy will grant read-only download access recursively:
+### AWS IAM Policy Example
 
-```
+The following AWS inline policy will grant read-only download access recursively:
+
+```json
 {
     "Statement": [
         {
@@ -54,8 +66,7 @@ Note: the following AWS inline policy will grant read-only download access recur
             "Action": [
                 "s3:GetObject",
                 "s3:GetObjectAcl",
-                "s3:ListBucket",
-                "s3:ListObjects"
+                "s3:ListBucket"
             ],
             "Resource": [
                 "arn:aws:s3:::YOUR-BUCKET-NAME",
